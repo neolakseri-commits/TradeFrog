@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#050908" />
+    <meta name="description" content="TRADEFROG — a paper-first Robinhood Chain trader radar." />
+    <title>TRADEFROG // Robinhood Chain terminal</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="TRADEFROG home"><span class="brand-mark">TF</span><span>TRADE<span class="lime">FROG</span></span></a>
+        <div class="chain-status"><span class="pulse"></span> ROBINHOOD CHAIN <span class="muted">/</span> PAPER NETWORK</div>
+        <div class="top-actions"><span class="live-indicator"><span class="dot"></span><span id="modeLabel">LIVE SCANNER</span></span><button class="icon-btn" id="pauseButton" type="button" title="Pause scanner (P)">Ⅱ</button><button class="avatar" type="button" title="Demo wallet">TF</button></div>
+      </header>
+
+      <main id="top" class="main-wrap">
+        <section class="hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="signal"></span> PAPER-FIRST TRADER RADAR</div>
+            <h1>Catch the move.<br /><span>Skip the noise.</span></h1>
+            <p>Fresh Robinhood Chain launches, rotating hunter wallets and five-wall decisions — in one focused screen.</p>
+            <div class="hero-actions"><button class="primary-btn" id="paperButton" type="button"><span>◎</span> Open paper sniper <kbd>SPACE</kbd></button><button class="ghost-btn" id="refreshButton" type="button">↻ Refresh radar</button></div>
+            <div class="hero-note"><span class="lime">●</span> No wallet connection. No live orders. Built for testing a thesis.</div>
+          </div>
+          <div class="hero-art" aria-label="TRADEFROG trader banner"><img src="assets/tradefrog-banner.png" alt="Pixel-art frog trader surrounded by market radar signals" /><div class="art-label label-top">RADAR / 04:21:08</div><div class="art-label label-bottom">HUNT THE EDGE <span>↗</span></div></div>
+        </section>
+
+        <section class="metric-grid" aria-label="Session metrics">
+          <article class="metric-card"><div class="metric-label">RADAR STATUS</div><div class="metric-value lime-text"><span class="live-dot"></span> SCANNING</div><div class="metric-meta" id="lastSync">synced 4s ago</div></article>
+          <article class="metric-card"><div class="metric-label">LAUNCHES CAUGHT</div><div class="metric-value" id="launchCount">84</div><div class="metric-meta up">+12 this session</div></article>
+          <article class="metric-card"><div class="metric-label">TONGUE RATE</div><div class="metric-value" id="tongueRate">76.4%</div><div class="metric-meta">of scored setups</div></article>
+          <article class="metric-card"><div class="metric-label">PAPER PNL</div><div class="metric-value up" id="paperPnl">+$1,284.60</div><div class="metric-meta">since 09:00 UTC</div></article>
+          <article class="metric-card"><div class="metric-label">ACTIVE HUNTERS</div><div class="metric-value" id="hunterCount">12</div><div class="metric-meta">rotating under radar</div></article>
+        </section>
+
+        <section class="workspace-grid">
+          <div class="left-column">
+            <article class="panel radar-panel"><div class="panel-heading"><div><div class="section-kicker">01 / RADAR</div><h2>Fresh launches</h2></div><div class="heading-tools"><span class="tiny-live"><span class="dot"></span> AUTO-ROTATE</span><span class="count-pill" id="newCount">+3 new</span></div></div><div class="filter-row" role="group" aria-label="Filter decisions"><button class="filter active" data-filter="ALL" type="button">ALL <span id="allCount">8</span></button><button class="filter" data-filter="TONGUE" type="button">TONGUE <span id="tongueCount">5</span></button><button class="filter" data-filter="SKIP" type="button">SKIP <span id="skipCount">3</span></button></div><div id="tokenList" class="token-list"></div><div class="panel-foot"><span><span class="pulse"></span> stream is moving</span><span>updated every 2.6s</span></div></article>
+            <article class="panel hunters-panel"><div class="panel-heading"><div><div class="section-kicker">02 / SOURCE PULSE</div><h2>Hunter wallets</h2></div><button class="text-btn" id="rotateButton" type="button">rotate pool ↗</button></div><div id="hunterList" class="hunter-list"></div></article>
+          </div>
+
+          <aside class="right-column">
+            <article class="panel decision-panel" id="decisionPanel"><div class="panel-heading"><div><div class="section-kicker">03 / DECISION ENGINE</div><h2 id="selectedName">$PONDY</h2></div><span class="decision-badge tongue" id="selectedDecision">TONGUE</span></div><div class="decision-source"><span id="selectedSource">@greenwhale</span><span id="selectedAge">· 18s ago</span><span class="source-tag">fresh</span></div><div class="score-block"><div class="score-main"><span>SETUP SCORE</span><strong id="selectedScore">86</strong><small>/ 100</small></div><div class="score-bar"><span id="scoreFill" style="width:86%"></span></div></div><div class="wall-grid" id="wallGrid"></div><div class="reason-box" id="reasonBox"><span class="reason-icon">✓</span><div><strong id="reasonTitle">High-conviction flow</strong><p id="reasonText">Hunter entry confirmed with depth and momentum aligned.</p></div></div><button class="primary-btn full" id="decisionButton" type="button">Open paper sniper <kbd>SPACE</kbd></button><div class="inspector-meta"><span>entry <strong id="selectedPrice">$0.0386</strong></span><span>liq <strong id="selectedLiquidity">$420k</strong></span><span>hold <strong>45m max</strong></span></div></article>
+            <article class="panel mini-chart-panel"><div class="panel-heading"><div><div class="section-kicker">MARKET BOX</div><h2 id="chartName">$PONDY / USDC</h2></div><span class="up" id="chartChange">+18.4%</span></div><div class="chart-wrap"><svg id="chart" viewBox="0 0 520 170" role="img" aria-label="Price movement chart"></svg><div class="chart-axis"><span>10:05</span><span>10:30</span><span>10:55</span><span>NOW</span></div></div></article>
+          </aside>
+        </section>
+
+        <section class="bottom-grid"><article class="panel positions-panel"><div class="panel-heading"><div><div class="section-kicker">04 / PAPER SNIPER</div><h2>Open positions</h2></div><span class="count-pill">risk contained</span></div><div class="table-wrap"><table><thead><tr><th>ASSET</th><th>ENTRY</th><th>MARK</th><th>PnL</th><th>EXIT RULES</th><th>STATE</th></tr></thead><tbody id="positionsBody"></tbody></table></div></article><article class="panel feed-panel"><div class="panel-heading"><div><div class="section-kicker">05 / SNIPE LOG</div><h2>Live event stream</h2></div><span class="tiny-live"><span class="dot"></span> LIVE</span></div><div id="eventFeed" class="event-feed"></div></article></section>
+
+        <footer class="footer"><span>TRADEFROG <span class="muted">// open paper terminal</span></span><span><a href="docs/PRODUCT.md">product map</a> · <a href="https://github.com/lunarresearcher/copy" target="_blank" rel="noreferrer">inspired by the problem</a> · <span class="muted">not financial advice</span></span></footer>
+      </main>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js" defer></script>
+  </body>
+</html>
