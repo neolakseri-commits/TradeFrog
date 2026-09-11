@@ -4,7 +4,7 @@
 
 ![TRADEFROG terminal banner](assets/tradefrog-banner.png)
 
-TRADEFROG is a paper-first market-flow terminal designed for traders who want one dense, beautiful screen:
+TRADEFROG is a paper-first market-flow terminal designed for traders who want one dense, beautiful screen. Version `0.2.1` includes the GMGN/FOMO panel and the fixed TypeScript renderer:
 
 - Live Trader Flow — BUY/SELL events with trader, token, amount and PnL.
 - Smart Money Radar — buy pressure, signal score, trend and top flow.
