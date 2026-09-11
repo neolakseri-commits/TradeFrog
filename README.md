@@ -1,98 +1,120 @@
 # TRADEFROG
 
-> Catch the move. Skip the noise.
+> A real TypeScript command-line trader terminal for Robinhood Chain.
 
-TRADEFROG is a stylish, paper-first trader radar for Robinhood Chain. Fresh launches float onto the radar, hunter wallets rotate underneath them, and every candidate passes through five visible walls before it can become a `TONGUE`.
+![TRADEFROG terminal banner](assets/tradefrog-banner.png)
 
-![TRADEFROG banner](assets/tradefrog-banner.png)
+TRADEFROG is a paper-first market-flow terminal designed for traders who want one dense, beautiful screen:
 
-## What is inside
+- Live Trader Flow — BUY/SELL events with trader, token, amount and PnL.
+- Smart Money Radar — buy pressure, signal score, trend and top flow.
+- Top Traders Leaderboard — 7D PnL, win rate, trade count and sparklines.
+- Trader Profile — performance, streak, average hold and top memes.
+- Trader Consensus — BUY/SELL pressure, flow and signal strength.
+- Paper Copy — `SPACE` arms a paper position with automatic TP / SL / trailing / max-hold exits.
+- Full-screen ANSI TUI, written in TypeScript. No HTML application is required to run it.
 
-- Fresh launch radar with `ALL / TONGUE / SKIP` filters.
-- Rotating hunter-wallet desk with PnL and mini-flow graphs.
-- Decision inspector: `EDGE / DEPTH / TURN / MOMO / PRICE`.
-- Exact refusal reason for every `SKIP`.
-- `SPACE` shortcut for opening a paper sniper.
-- Live-style paper positions, mark updates and event stream.
-- GitHub Pages deployment workflow.
-- Zero dependencies: open `index.html` or serve the folder with any static server.
+The current provider is a deterministic demo stream so the terminal works immediately. No wallet is connected and no live order is sent.
 
-This is a front-end demo and paper-trading shell. It does not connect a wallet or place live orders.
+## Run
 
-## Run locally
-
-PowerShell:
+Node.js 20+ is required.
 
 ```powershell
-cd TRADEFROG
-py -m http.server 4173
+npm install
+npm run dev
 ```
 
-Then open <http://localhost:4173>.
-
-If Python is not installed, use any static server. For example:
+For a social-media-friendly demo loop:
 
 ```powershell
-npx serve .
+npm run showcase
 ```
 
-## Keyboard controls
-
-| Key | Action |
-| --- | --- |
-| `SPACE` | Arm a paper sniper for the selected `TONGUE` |
-| `F` | Cycle `ALL → TONGUE → SKIP` |
-| `P` | Pause / resume the scanner |
-| `R` | Refresh the radar |
-| `↑ / ↓` | Use browser focus to move through the radar |
-
-## Publish to GitHub
-
-Create an empty repository named `tradefrog` on GitHub, then run:
+Build and run the compiled TypeScript:
 
 ```powershell
-cd TRADEFROG
-git init
-git add index.html styles.css app.js README.md docs assets .github .gitignore LICENSE
-git commit -m "build: launch TRADEFROG paper radar"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/tradefrog.git
-git push -u origin main
+npm run check
+npm run build
+npm start
 ```
 
-Then in GitHub open `Settings → Pages`, set **Source** to **GitHub Actions**. Every push to `main` will publish the static site.
+Install it as a local command:
 
-## What to upload
+```powershell
+npm run build
+npm link
+tradefrog
+```
 
-Upload these files and folders:
+## Controls
 
 ```text
-index.html
-styles.css
-app.js
+↑ / ↓     select trader
+SPACE     copy selected trader into paper mode
+C         follow selected trader
+P         pause / resume stream
+R         refresh provider heartbeat
+Q / ESC   quit
+```
+
+## Repository layout
+
+```text
+src/
+├── data.ts       demo traders, markets and live-flow seed
+├── types.ts      domain types for traders, markets and positions
+├── terminal.ts   ANSI renderer, panels, keyboard controls and paper exits
+└── index.ts      CLI entrypoint
+package.json      scripts and TypeScript toolchain
+tsconfig.json     strict TypeScript build configuration
+.github/workflows/ci.yml
+assets/tradefrog-banner.png
+```
+
+## Paper exit engine
+
+The terminal keeps paper positions moving on every tick. It closes a position when one of these conditions is met:
+
+- `TP` — PnL reaches +25%.
+- `SL` — PnL reaches -10%.
+- `TRAIL` — PnL pulls back 5 points from a profitable high-water mark.
+- `MAX-HOLD` — the position reaches the max simulated hold window.
+
+Every close is printed back into the live flow as an `EXIT` event.
+
+## Real provider seam
+
+Replace the demo arrays in `src/data.ts` with a provider adapter that returns the same `Trader`, `TradeEvent`, `Market` and `PaperPosition` shapes. Keep order execution behind a server-side boundary and keep paper mode as the default.
+
+## GitHub upload
+
+Upload:
+
+```text
+src/
+package.json
+tsconfig.json
 README.md
 LICENSE
 .gitignore
-.github/workflows/pages.yml
-docs/PRODUCT.md
+.github/workflows/ci.yml
 assets/tradefrog-banner.png
 assets/favicon.svg
+docs/PRODUCT.md
 ```
 
 Do not upload:
 
 ```text
 node_modules/
+dist/
+outputs/
+work/
 .env
 *.log
-dist/
-build/
 ```
 
-## Next integration seam
+## Disclaimer
 
-The demo data lives at the top of `app.js`. Replace that local state with a Robinhood Chain provider adapter later, keeping the same token object shape described in [`docs/PRODUCT.md`](docs/PRODUCT.md). Keep order execution behind a server-side boundary and leave paper mode as the default.
-
-## License
-
-MIT. See [`LICENSE`](LICENSE).
+TRADEFROG is an educational paper-trading terminal, not financial advice. The demo does not promise profit and does not execute real trades.
