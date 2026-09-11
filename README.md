@@ -11,6 +11,7 @@ TRADEFROG is a paper-first market-flow terminal designed for traders who want on
 - Top Traders Leaderboard — 7D PnL, win rate, trade count and sparklines.
 - Trader Profile — performance, streak, average hold and top memes.
 - Trader Consensus — BUY/SELL pressure, flow and signal strength.
+- GMGN / FOMO Intel — FOMO score, smart-wallet inflow, liquidity, holders and `EDGE / DEPTH / TURN / MOMO / PRICE` flow walls.
 - Paper Copy — `SPACE` arms a paper position with automatic TP / SL / trailing / max-hold exits.
 - Full-screen ANSI TUI, written in TypeScript. No HTML application is required to run it.
 
@@ -53,10 +54,36 @@ tradefrog
 ↑ / ↓     select trader
 SPACE     copy selected trader into paper mode
 C         follow selected trader
+M         cycle selected market
+G         refresh GMGN / FOMO snapshot
 P         pause / resume stream
 R         refresh provider heartbeat
 Q / ESC   quit
 ```
+
+## Terminal panels
+
+| Panel | What it shows |
+| --- | --- |
+| `TOP ROBINHOOD TRADERS` | 7D PnL, win rate, trades, streak flow and selected trader |
+| `LIVE TRADER FLOW` | BUY/SELL tape with trader, ticker, amount and PnL |
+| `TRADER PROFILE` | performance sparkline, average hold, followers and top memes |
+| `SMART MONEY RADAR` | buy pressure, signal score, trend and top flow |
+| `TRADER CONSENSUS` | BUY/SELL split, flow value and consensus signal |
+| `GMGN / FOMO INTEL` | FOMO score, smart wallets, liquidity, holders and five flow walls |
+| `PAPER COPY / AUTO EXITS` | active paper positions and TP/SL/trailing/max-hold state |
+
+## Commands
+
+| Command | Purpose |
+| --- | --- |
+| `npm install` | install the TypeScript toolchain |
+| `npm run dev` | launch the live demo terminal in TypeScript mode |
+| `npm run showcase` | launch the same screen for recording or screenshots |
+| `npm run check` | run strict TypeScript validation |
+| `npm run build` | compile `src/` into `dist/` |
+| `npm start` | run the compiled terminal |
+| `npm link` | expose the compiled `tradefrog` command locally |
 
 ## Repository layout
 
@@ -87,33 +114,18 @@ Every close is printed back into the live flow as an `EXIT` event.
 
 Replace the demo arrays in `src/data.ts` with a provider adapter that returns the same `Trader`, `TradeEvent`, `Market` and `PaperPosition` shapes. Keep order execution behind a server-side boundary and keep paper mode as the default.
 
-## GitHub upload
+## Publish
 
-Upload:
-
-```text
-src/
-package.json
-tsconfig.json
-README.md
-LICENSE
-.gitignore
-.github/workflows/ci.yml
-assets/tradefrog-banner.png
-assets/favicon.svg
-docs/PRODUCT.md
+```powershell
+git init
+git add .
+git commit -m "build: launch TRADEFROG TypeScript terminal"
+git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/tradefrog.git
+git push -u origin main
 ```
 
-Do not upload:
-
-```text
-node_modules/
-dist/
-outputs/
-work/
-.env
-*.log
-```
+The included GitHub Action runs `npm install`, `npm run check` and `npm run build` on every push.
 
 ## Disclaimer
 
