@@ -1,0 +1,10 @@
+node_modules/
+dist/
+build/
+coverage/
+.env
+*.log
+npm-debug.log*
+.npm-cache/
+outputs/
+work/
