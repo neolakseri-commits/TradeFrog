@@ -1,28 +1,30 @@
 # TRADEFROG product map
 
-TRADEFROG is a paper-first terminal for traders watching Robinhood Chain market flow. The first version is deliberately browser-only and dependency-free so the visual system can be shipped quickly and the data layer can be replaced later.
+## Product loop
 
-## Core loop
+1. A trader flow event lands in the live stream.
+2. The market is scored by buy pressure, signal strength and trend.
+3. Smart-money traders rotate through the leaderboard and selected profile.
+4. Consensus shows whether the tracked traders agree.
+5. GMGN / FOMO Intel adds a FOMO score, smart-wallet inflow, liquidity, holders and five visible flow walls.
+6. `SPACE` opens a paper copy for the selected trader and market.
+7. The position is marked on every tick.
+8. TP / SL / trailing / max-hold close the paper position automatically.
 
-1. Fresh launches appear on the radar.
-2. A rotating set of hunter wallets is placed underneath the new launches.
-3. Every candidate is scored through `EDGE / DEPTH / TURN / MOMO / PRICE`.
-4. A weak setup becomes `SKIP` with a precise reason.
-5. A clean setup becomes `TONGUE`.
-6. Press `SPACE` to arm a paper sniper for the selected `TONGUE`.
-7. Positions keep marking on the same screen.
-8. TP, SL, trailing and max-hold are the planned automatic exit layer.
-9. PnL, token moves and new swipes stay visible in one stream.
+## TypeScript contracts
 
-## Data seam
+The data layer is intentionally small. A real Robinhood Chain adapter should return the types from `src/types.ts`:
 
-`app.js` currently uses local demo state. To connect a provider later, keep the UI contract and replace the mock stream with an adapter that returns:
-
-```js
-{
-  id, symbol, name, source, age, price, liq, change,
-  score, decision, reasonTitle, reason, walls, wallState
-}
+```ts
+Trader
+TradeEvent
+Market
+PaperPosition
 ```
 
-The UI intentionally has no private keys, wallet connection, or live order executor.
+The renderer does not know where the data came from. This keeps provider integration separate from terminal UX.
+
+## Safety boundary
+
+The repository ships in demo/paper mode. Do not place private keys in this project or add client-side order signing. A future live executor should run server-side, validate risk limits, and require an explicit user opt-in.
+
