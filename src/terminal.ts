@@ -160,14 +160,15 @@ function fomoRows(state: AppState): string[] {
     `${gray("smart wallets")} ${green(`${market.smartWallets} active`)}  ${gray("inflow")} ${green("+$184K")}`,
     `${gray("liquidity")}    ${white(market.liquidity)}  ${gray("holders")} ${white(market.holders)}`,
     "",
-    `${yellow("COPY FLOW WALLS")}`,
+      `${yellow("COPY FLOW WALLS")}`,
     ...walls.map((wall) => {
       const name = String(wall[0]);
       const score = Number(wall[1]);
+
       return `${gray(name.padEnd(7, " "))} ${bar(score, 12)} ${green(String(score).padStart(3, " "))}/100`;
     }),
     "",
-    `${gray("GMGN")}${green(" connected")}  ${gray("FOMO")}${green(" live")}`
+    `${gray("GMGN")}${green(" connected")}  ${gray("FOMO")}${green(" live")}`,
   ];
 }
 
